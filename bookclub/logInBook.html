@@ -74,22 +74,66 @@
           <li id ="panel3" rel = "panelTrades" ><a href="#">Trades</a></li>
         </ul>
         </div>
+        <!-- book list -->
         <div id = "panelBook" class="panel panel-default">
 
             <div id = "bookList" class="list-group" >
-              <li id = "bookItem" class="list-group-item"><a href="#" class="list-group-item" >
-                <h4 class="list-group-item-heading">bookName</h4>
-                <p class="list-group-item-text">laksj;dlajd
-                </p>
-              </a></li>
-              <li class="list-group-item"><a href="#" class="list-group-item" >
-                <h4 class="list-group-item-heading">bookName</h4>
-                <p class="list-group-item-text">laksj;dlajd
-                </p>
-              </a></li>
-              <li id = "addNewPanel" class="list-group-item"><a href="#" class="list-group-item" >
-                <p class="list-group-item-text"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Add New Book </p>
-              </a></li>
+              <li id = "bookItem" class="list-group-item">
+                <div class="media">
+                  <a class="media-left" href="#">
+                    <img src="http://icdn.pro/images/en/j/a/jack-skellington-icone-3829-128.png" alt="...">
+                  </a>
+                  <div class="media-body">
+                    <a href="#" class="list-group-item" >
+                      <h4 class="list-group-item-heading">bookName: </h4>
+                      <p class="list-group-item-text">Author Name: </br>
+                      </p>
+                      <p class="list-group-item-text">ISBN: </br>
+                      </p>
+                      <p class="list-group-item-text">Price: </br>
+                      </p>
+                      <button class="btn btn-panel btn-xs" type="button" aria-expanded="false">
+                        delete <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+
+                    </a>
+                  </div>
+
+              </li>
+              <li id = "bookItem" class="list-group-item"><div class="media">
+                <a class="media-left" href="#">
+                  <img src="http://icdn.pro/images/en/j/a/jack-skellington-icone-3829-128.png" alt="...">
+                </a>
+                <div class="media-body">
+                  <a href="#" class="list-group-item" >
+                    <h4 class="list-group-item-heading">bookName</h4>
+                    <p class="list-group-item-text">Author Name: </br>
+                    </p>
+                    <p class="list-group-item-text">ISBN: </br>
+                    </p>
+                    <p class="list-group-item-text">Price: </br>
+                    </p>
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> delete
+                  </a>
+                </div>
+              </div>
+              </li>
+
+              <li id = "addNewPanel" class="list-group-item">
+
+                <div class="input-group">
+
+                  <form action="#">
+                    <div class="input-group">
+                    <input type="text" class="form-control" placeholder="ISBN">
+                    <span class = "input-group-btn">
+                    <input id = searchBtn type="submit" class = "btn btn-primaryCustomer" value="Search Book">
+                  </span>
+                  </div>
+                  </form>
+
+                </div><!-- /input-group -->
+                </li>
             </div>
         </div>
 
@@ -142,34 +186,55 @@
             </div>
           </div>
 
+
           <div id = "panelNew"class="panel panel-default">
-            <ul class="list-group">
-              <li class="list-group-item"><div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-addon"> Author Name</span>
-              </div></li>
-              <li class="list-group-item"><div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-addon">Book Title</span>
-              </div></li>
-              <li class="list-group-item"><div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-addon">Asking Price</span>
-              </div></li>
-              <li class="list-group-item"><div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-addon">ISBN</span>
-              </div></li>
-              <li class="list-group-item"><div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-addon">Condition</span>
-              </div></li>
-              <li class="list-group-item"><div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-addon">Class For </span>
-              </div></li>
-              <li class="list-group-item"><button id = "upload" type="button" class="btn btn-primaryCustomer">Upload</button></li>
-            </ul>
+            <!-- pull information from google api or amzon api. and display it in the panel.-->
+          <!-- gather information for api -->
+          <script>
+          $(function(){
+            var bookName = 'bookNameDB';
+            var author = 'authorDB';
+            var ISBN = 'ISBNDB';
+            var price = 'priceDB';
+          // according to the api information to change the content
+          $('#searchBN').html('boo');
+
+          });
+
+          <!--  add Information to the list -->
+
+          </script>
+
+          <!-- add information to the list -->
+          <li id = "bookItem" class="list-group-item">
+            <div class="media">
+              <a class="media-left" href="#">
+                <img src="http://icdn.pro/images/en/j/a/jack-skellington-icone-3829-128.png" alt="...">
+              </a>
+              <div class="media-body">
+                <a href="#" class="list-group-item" >
+                  <h4 id = "searchBN" class="list-group-item-heading"> bookName: </h4>
+                  <p id = "searchAN" class="list-group-item-text">Author Name: </br>
+                  </p>
+                  <p id = "searchISBN" class="list-group-item-text">ISBN: </br>
+                  </p>
+                  <p id = "searchP" class="list-group-item-text">Price: </br>
+                  </p>
+                  <!-- I am thinking that we can use form action to send data to database-->
+                  <!-- The problem of doing that is that we will have a submit button on every book item panel-->
+                  <form action= "">
+                    <!-- still have to figure out how to uncheck the radio-->
+                    <input type="radio" name="add" value="1" checked> add
+                    <input type="radio" name="add" value="0"> ignore
+                    <br>
+                    <input type="submit" class = btn btn-primary value="Submit">
+                  </form>
+                </a>
+              </div>
+
+            </li>
+
+
           </div>
 
 
@@ -203,7 +268,7 @@
     $('#panelNew').hide();
     $('#panelSearch').hide();
     $('#panelTrades').hide();
-    $('#addNewPanel').on('click', function(){
+    $('#searchBtn').on('click', function(){
       $('#panelNew').slideToggle(600);
     });
     //when click the upload button, it will create a new panel item
