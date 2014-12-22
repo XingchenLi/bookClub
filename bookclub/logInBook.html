@@ -1,6 +1,6 @@
   <!DOCTYPE HTML>
   <html lang="zh-C" class="ua-mac ua-webkit">
-  
+
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title></title>
@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 
   </head>
-  
+
   <body>
   <div class = "container">
   <nav class="navbar navbar-customer" role="navigation">
@@ -65,17 +65,17 @@
 <!--information display for pannel -->
 <div class="container">
   <div class="row">
-   
+
   <div class="col-md-8 col-xs-12">
         <div rel = "test" class="guidePage">
         <ul rel = "switchPanel" class="nav nav-tabs">
-          <li id ="panel1" rel = "panelBook"  class="active"><a href="#">Mybook</a></li> 
+          <li id ="panel1" rel = "panelBook"  class="active"><a href="#">Mybook</a></li>
           <li id ="panel2" rel = "panelSearch" ><a href="#">Find Book</a></li>
           <li id ="panel3" rel = "panelTrades" ><a href="#">Trades</a></li>
         </ul>
         </div>
         <div id = "panelBook" class="panel panel-default">
-          
+
             <div id = "bookList" class="list-group" >
               <li id = "bookItem" class="list-group-item"><a href="#" class="list-group-item" >
                 <h4 class="list-group-item-heading">bookName</h4>
@@ -94,7 +94,7 @@
         </div>
 
          <div id = "panelSearch"class="panel panel-default">
-          
+
             <ul class="list-group">
               <li class="list-group-item"><div class="input-group">
                 <input type="text" class="form-control">
@@ -124,7 +124,7 @@
             </ul>
         </div>
          <div id = "panelTrades"class="panel panel-default">
-          
+
             <div class="list-group" id = "bookList">
               <li class="list-group-item"><a href="#" class="list-group-item" >
                 <h4 class="list-group-item-heading">bookName</h4>
@@ -182,7 +182,7 @@
     What ever you want
   </div>
 </div>
-    
+
   </div>
 
 </div><!-- row -->
@@ -206,7 +206,7 @@
     $('#addNewPanel').on('click', function(){
       $('#panelNew').slideToggle(600);
     });
-    //when click the upload button, it will create a new panel item 
+    //when click the upload button, it will create a new panel item
     // on book panel
 
     $('#upload').on('click', function(){
@@ -227,7 +227,7 @@
     $('#panelTrades').hide();
         $('#panelNew').hide();
     });
-    
+
      $('#panel3').on('click' , function(){
       var paneltoshow = $(this).attr('rel');
       $('#panelBook').hide();
@@ -236,10 +236,10 @@
         $('#panelNew').hide();
 
     });
-    
-    
 
-    
+
+
+
   });
 
 
