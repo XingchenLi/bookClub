@@ -70,7 +70,7 @@ if ($email_login == 1) {
 		<form class='form-horizontal' role='form' name='login' action='api/process_login.php' method='post'>
 		  <div class="row">
 			<div id='display-alerts' class="col-lg-12">
-  
+
 			</div>
 		  </div>
 		  <div class="form-group">
@@ -85,39 +85,39 @@ if ($email_login == 1) {
 		  </div>
 		  <div class="form-group">
 			<div class="col-md-12">
-			  <button type="submit" class="btn btn-success submit" value='Login'>Login</button>
+			  <button type="submit" class="btn btn-primary submit" value='Login'>Login</button>
 			</div>
 		  </div>
 		  <div class="jumbotron-links">
-		  </div>		  
+		  </div>
 		</form>
-      </div>	
+      </div>
       <?php echo renderTemplate("footer.html"); ?>
 
     </div> <!-- /container -->
 
 	<script>
-        $(document).ready(function() {          
+        $(document).ready(function() {
 		  // Load navigation bar
 		  $(".navbar").load("header-loggedout.php", function() {
 			  $(".navbar .navitem-login").addClass('active');
 		  });
 		  // Load jumbotron links
 		  $(".jumbotron-links").load("jumbotron_links.php");
-	  
+
 		  alertWidget('display-alerts');
-			  
+
 		  $("form[name='login']").submit(function(e){
 			var form = $(this);
 			var url = 'api/process_login.php';
-			$.ajax({  
-			  type: "POST",  
-			  url: url,  
+			$.ajax({
+			  type: "POST",
+			  url: url,
 			  data: {
 				username:	form.find('input[name="username"]').val(),
 				password:	form.find('input[name="password"]').val(),
 				ajaxMode:	"true"
-			  },		  
+			  },
 			  success: function(result) {
 				var resultJSON = processJSONResult(result);
 				if (resultJSON['errors'] && resultJSON['errors'] > 0){
@@ -130,7 +130,7 @@ if ($email_login == 1) {
 			// Prevent form from submitting twice
 			e.preventDefault();
 		  });
-		  
+
 		});
 	</script>
   </body>

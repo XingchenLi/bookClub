@@ -72,9 +72,9 @@ if(isUserLoggedIn()) {
 		<form name='newUser' id='newUser' class='form-horizontal' role='form' action='api/create_user.php' method='post'>
 		  <div class="row">
 				<div id='display-alerts' class="col-lg-12">
-		  
+
 				</div>
-		  </div>		
+		  </div>
 		  <div class="row form-group">
 			<label class="col-sm-4 control-label">Username</label>
 			<div class="col-sm-8">
@@ -101,7 +101,7 @@ if(isUserLoggedIn()) {
 					<input type="email" class="form-control" placeholder="Email" name='email' data-validate='{"email": true, "minLength": 1, "maxLength": 150, "label": "Email" }'>
 				</div>
 			</div>
-		  </div>		  
+		  </div>
 		  <div class="row form-group">
 			<label class="col-sm-4 control-label">Password</label>
 			<div class="col-sm-8">
@@ -135,11 +135,11 @@ if(isUserLoggedIn()) {
 		  <br>
 		  <div class="form-group">
 			<div class="col-sm-12">
-			  <button type="submit" class="btn btn-success submit" value='Register'>Register</button>
+			  <button type="submit" class="btn btn-primary submit" value='Register'>Register</button>
 			</div>
 		  </div>
 		</form>
-	  </div>	
+	  </div>
       <?php echo renderTemplate("footer.html"); ?>
 
     </div> <!-- /container -->
@@ -150,7 +150,7 @@ if(isUserLoggedIn()) {
 		$(".navbar").load("header-loggedout.php", function() {
             $(".navbar .navitem-register").addClass('active');
         });
-		
+
 		// Process submission
         $("form[name='newUser']").submit(function(e){
 			e.preventDefault();
@@ -160,12 +160,12 @@ if(isUserLoggedIn()) {
 				$('#display-alerts').html("");
 				$.each(errorMessages, function (idx, msg) {
 					$('#display-alerts').append("<div class='alert alert-danger'>" + msg + "</div>");
-				});	
+				});
 			} else {
                 var url = APIPATH + 'create_user.php';
-                $.ajax({  
-                  type: "POST",  
-                  url: url,  
+                $.ajax({
+                  type: "POST",
+                  url: url,
                   data: {
 					user_name: 		form.find('input[name="user_name"]' ).val(),
 					display_name: 	form.find('input[name="display_name"]' ).val(),
@@ -174,7 +174,7 @@ if(isUserLoggedIn()) {
 					passwordc: 		form.find('input[name="passwordc"]' ).val(),
 					captcha: 		form.find('input[name="captcha"]' ).val(),
                     ajaxMode:		"true"
-                  }		  
+                  }
                 }).done(function(result) {
                   var resultJSON = processJSONResult(result);
                   if (resultJSON['errors'] && resultJSON['errors'] > 0){
@@ -188,7 +188,7 @@ if(isUserLoggedIn()) {
                   } else {
                     window.location.replace('login.php');
                   }
-                });   
+                });
             }
 		});
 	});

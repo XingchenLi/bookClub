@@ -1,33 +1,5 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 // Request method: GET
 
@@ -71,11 +43,11 @@ $v->setDefault('buttons', array());
 $v->validate();
 
 // Process errors
-if (count($v->errors()) > 0) {	
+if (count($v->errors()) > 0) {
   foreach ($v->errors() as $idx => $error){
     addAlert("danger", $error);
   }
-  apiReturnError($ajax, ACCOUNT_ROOT);    
+  apiReturnError($ajax, ACCOUNT_ROOT);
 } else {
     $get = $v->data();
 }
@@ -99,8 +71,8 @@ if ($populate_fields){
     $deleteLabel = $user['user_name'];
     $user_groups = loadUserGroups($get['user_id']);
     if ($get['render_mode'] == "panel"){
-        $box_title = $user['display_name']; 
-    }   
+        $box_title = $user['display_name'];
+    }
 } else {
     $user = array();
     $deleteLabel = "";
@@ -128,7 +100,7 @@ $fields_default = [
             'label' => 'Display name'
         ],
         'placeholder' => 'Please enter the display name'
-    ],          
+    ],
     'email' => [
         'type' => 'text',
         'label' => 'Email',
@@ -179,7 +151,7 @@ $fields_default = [
             'maxLength' => 50,
             'label' => 'Password',
             'passwordMatch' => 'passwordc'
-        ]        
+        ]
     ],
     'passwordc' => [
         'type' => 'password',
@@ -190,7 +162,7 @@ $fields_default = [
             'minLength' => 8,
             'maxLength' => 50,
             'label' => 'Password'
-        ]     
+        ]
     ],
     'groups' => [
         'display' => 'disabled'
@@ -212,13 +184,13 @@ $buttons_default = [
     "label" => $button_submit_text,
     "display" => "hidden",
     "style" => "success",
-    "size" => "lg"  
+    "size" => "lg"
   ],
   "btn_edit" => [
     "type" => "launch",
     "label" => "Edit",
-    "icon" => "fa fa-edit",    
-    "display" => "show"            
+    "icon" => "fa fa-edit",
+    "display" => "show"
   ],
   "btn_activate" => [
     "type" => "button",
@@ -240,11 +212,11 @@ $buttons_default = [
     "icon" => "fa fa-plus-circle",
     "display" => (isset($user['enabled']) && $user['enabled'] == '1') ? "hidden" : "show",
     "style" => "warning"
-  ],  
+  ],
   "btn_delete" => [
     "type" => "launch",
     "label" => "Delete",
-    "icon" => "fa fa-trash-o",    
+    "icon" => "fa fa-trash-o",
     "display" => "show",
     "data" => array(
         "label" => $deleteLabel
@@ -256,7 +228,7 @@ $buttons_default = [
     "label" => "Cancel",
     "display" => ($get['render_mode'] == 'modal') ? "show" : "hidden",
     "style" => "link",
-    "size" => "lg"    
+    "size" => "lg"
   ]
 ];
 
@@ -274,7 +246,7 @@ if ($get['render_mode'] == "modal"){
                     <h4 class='modal-title'>$box_title</h4>
                 </div>
                 <div class='modal-body'>
-                    <form method='post' action='$target'>";        
+                    <form method='post' action='$target'>";
 } else if ($get['render_mode'] == "panel"){
     $template .=
     "<div class='panel panel-primary'>
@@ -302,7 +274,7 @@ $template .= "
     </div>
     <div class='col-sm-6'>
         {{display_name}}
-    </div>    
+    </div>
 </div>
 <div class='row'>
     <div class='col-sm-6'>
@@ -310,7 +282,7 @@ $template .= "
     </div>
     <div class='col-sm-6'>
         {{title}}
-    </div>    
+    </div>
 </div>
 <div class='row'>
     <div class='col-sm-6'>
@@ -318,7 +290,7 @@ $template .= "
     </div>
     <div class='col-sm-6'>
         {{sign_up_stamp}}
-    </div>    
+    </div>
 </div>
 <div class='row'>
     <div class='col-sm-6'>
@@ -329,24 +301,24 @@ $template .= "
 // Attempt to load all user groups, if the groups field is enabled
 if ($fields['groups']['display'] != "hidden"){
     $groups = loadGroups();
-    
+
     if ($groups){
-    
+
       if ($fields['groups']['display'] == "disabled"){
         $disable_str = "disabled";
       } else {
         $disable_str = "";
       }
-    
-      $template .= "    
+
+      $template .= "
           <div class='col-sm-6'>
               <h5>Groups</h5>
               <ul class='list-group permission-summary-rows'>";
-      
+
       foreach ($groups as $id => $group){
           $group_name = $group['name'];
           $is_default = $group['is_default'];
-          $disable_primary_toggle = $disable_str; 
+          $disable_primary_toggle = $disable_str;
           $template .= "
           <li class='list-group-item'>
               $group_name
@@ -363,14 +335,14 @@ if ($fields['groups']['display'] != "hidden"){
           } else {
             $primary_group_checked = "false";
           }
-          
+
           $template .= "  <button type='button' class='bootstrapradio' name='primary_group_id' value='$id' title='Set as primary group' data-selected='$primary_group_checked' $disable_primary_toggle><i class='fa fa-home'></i></button>";
-          
-          
+
+
           $template .= "</span>
-          </li>";  
+          </li>";
       }
-            
+
       $template .= "
               </ul>
           </div>";
@@ -387,19 +359,19 @@ $template .= "<br>
     </div>
     <div class='col-xs-6 col-sm-3 hideable'>
         {{btn_edit}}
-    </div>    
+    </div>
     <div class='col-xs-6 col-sm-3 hideable'>
         {{btn_activate}}
     </div>
-    <div class='col-xs-6 col-sm-3 hideable'> 
+    <div class='col-xs-6 col-sm-3 hideable'>
       {{btn_enable}}
     </div>
-    <div class='col-xs-6 col-sm-3 hideable'> 
+    <div class='col-xs-6 col-sm-3 hideable'>
       {{btn_disable}}
     </div>
     <div class='col-xs-6 col-sm-3 hideable'>
       {{btn_delete}}
-    </div>    
+    </div>
     <div class='col-xs-4 col-sm-3 pull-right'>
       {{btn_cancel}}
     </div>
@@ -414,7 +386,7 @@ else
 // Render form
 $fb = new FormBuilder($template, $fields, $buttons, $user);
 $response = $fb->render();
-     
+
 if ($ajax)
     echo json_encode(array("data" => $response), JSON_FORCE_OBJECT);
 else

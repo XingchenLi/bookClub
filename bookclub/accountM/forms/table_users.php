@@ -15,7 +15,7 @@ if (!securePage(__FILE__)){
 $get = filter_input_array(INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS);
 
 // Parameters: [title, limit, columns, actions, buttons]
-// title (optional): title of this table. 
+// title (optional): title of this table.
 // limit (optional): if specified, loads only the first n rows.
 // columns (optional): a list of columns to render.
 // actions (optional): a list of actions to render in a dropdown in a special 'action' column.
@@ -62,9 +62,9 @@ $v->setDefault('columns',
             {{last_sign_in_date}} {{last_sign_in_time}}",
         'empty_field' => 'last_sign_in_stamp',
         'empty_value' => '0',
-        'empty_template' => "<i>Brand new</i>"            
+        'empty_template' => "<i>Brand new</i>"
     ]
-    
+
 ]);
 
 $v->setDefault('menu_items',
@@ -93,11 +93,11 @@ $v->setDefault('buttons',
 $v->validate();
 
 // Process errors
-if (count($v->errors()) > 0) {	
+if (count($v->errors()) > 0) {
   foreach ($v->errors() as $idx => $error){
     addAlert("danger", $error);
   }
-  apiReturnError($ajax, ACCOUNT_ROOT);    
+  apiReturnError($ajax, ACCOUNT_ROOT);
 } else {
     $get = $v->data();
 }
@@ -117,42 +117,42 @@ if (isset($get['buttons']['view_all'])){
 
 // Load users
 if (($users = loadUsers($get['limit'])) === false) {
-  apiReturnError($ajax, ACCOUNT_ROOT);  
+  apiReturnError($ajax, ACCOUNT_ROOT);
 }
 
 // Compute user table properties
 foreach($users as $user_id => $user){
     $users[$user_id]['user_status'] = "Active";
     $users[$user_id]['user_status_style'] = "primary";
-    
+
     $date_disp = formatDateComponents($user['last_sign_in_stamp']);
     $users[$user_id]['last_sign_in_day'] = $date_disp['day'];
     $users[$user_id]['last_sign_in_date'] = $date_disp['date'];
-    $users[$user_id]['last_sign_in_time'] = $date_disp['time'];    
+    $users[$user_id]['last_sign_in_time'] = $date_disp['time'];
 
     $date_disp = formatDateComponents($user['sign_up_stamp']);
     $users[$user_id]['sign_up_day'] = $date_disp['day'];
     $users[$user_id]['sign_up_date'] = $date_disp['date'];
     $users[$user_id]['sign_up_time'] = $date_disp['time'];
-    
+
     if ($user['active'] == '1')
         $users[$user_id]['hide_activation'] = "hidden";
     else {
         $users[$user_id]['hide_activation'] = "";
         $users[$user_id]['user_status'] = "Unactivated";
-        $users[$user_id]['user_status_style'] = "warning";        
+        $users[$user_id]['user_status_style'] = "warning";
     }
 
     if ($user['enabled'] == '1') {
         $users[$user_id]['toggle_disable_class'] = "btn-disable-user";
         $users[$user_id]['toggle_disable_icon'] = "fa fa-minus-circle";
-        $users[$user_id]['toggle_disable_label'] = "Disable user";        
+        $users[$user_id]['toggle_disable_label'] = "Disable user";
     } else {
         $users[$user_id]['toggle_disable_class'] = "btn-enable-user";
         $users[$user_id]['toggle_disable_icon'] = "fa fa-plus-circle";
         $users[$user_id]['toggle_disable_label'] = "Enable user";
         $users[$user_id]['user_status'] = "Disabled";
-        $users[$user_id]['user_status_style'] = "default";        
+        $users[$user_id]['user_status_style'] = "default";
     }
 }
 

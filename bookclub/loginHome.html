@@ -1,7 +1,10 @@
-  <!DOCTYPE HTML>
-  <html lang="zh-C" class="ua-mac ua-webkit">
-  
-  <head>
+
+
+<!DOCTYPE HTML>
+
+<html lang="zh-C" class="ua-mac ua-webkit">
+
+<head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title></title>
   <meta name="keywords" content="bookClub" />
@@ -14,8 +17,19 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 
   </head>
-  
+
   <body>
+    <?php
+    require_once("../models/config.php");
+    if (!securePage(__FILE__)){
+      // Forward to index page
+      addAlert("danger", "Whoops, looks like you don't have permission to view that page.");
+      header("Location: 404.php");
+      exit();
+    }
+    setReferralPage(getAbsoluteDocumentPath(__FILE__));
+    ?>
+
   <div class = "container">
   <nav class="navbar navbar-customer" role="navigation">
   <div class="container-fluid">
@@ -49,7 +63,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">profile</a></li>
+            <li><a href="accountM/account">profile</a></li>
             <li><a href="#">change password</a></li>
             <li><a href="#">Search people</a></li>
             <li class="divider"></li>
@@ -68,7 +82,7 @@
    <div class="col-md-2 col-xs-12">
      <div class="panel panel-primary">
       <!-- Default panel contents -->
-     
+
       <div class="panel-body">
         <div class="media">
           <a class="media-left" href="#">
@@ -93,14 +107,14 @@
     <!-- display information Pannel -->
   </div>
   <div class="col-md-8 col-xs-12">
-    
+
         <ul class="nav nav-tabs">
           <li role="presentation" class="active"><a href="#" class="list-group-item">Home</a></li>
           <li role="presentation"><a href="profile.html">Profile</a></li>
           <li role="presentation"><a href="#">Messages</a></li>
         </ul>
         <div class="panel panel-default">
-          
+
             <div class="list-group">
               <li class="list-group-item"><a href="#" class="list-group-item" >
                 <h4 class="list-group-item-heading">User friend's Name1</h4>
@@ -133,11 +147,11 @@
               </a></li>
 
             </div>
-          
+
         </div>
 
 
-    
+
   </div>
 
   <div class="col-md-2 ">
@@ -146,7 +160,7 @@
     Basic panel example
   </div>
 </div>
-    
+
   </div>
 
 </div><!-- row -->
@@ -161,6 +175,6 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   </body>
-  
+
 
   </html>

@@ -31,27 +31,6 @@ THE SOFTWARE.
 
 require_once("../models/config.php");
 
-// Recommended admin-only access
-if (!securePage(__FILE__)){
-    if (isset($_POST['ajaxMode']) and $_POST['ajaxMode'] == "true" ){
-        echo json_encode(array("errors" => 1, "successes" => 0));
-    } else {
-        header("Location: " . getReferralPage());
-    }
-    exit();
-}
-
-$validator = new Validator();
-
-// Look up specified user
-$selected_user_id = $validator->requiredGetVar('id');
-
-if (!is_numeric($selected_user_id) || !userIdExists($selected_user_id)){
-	addAlert("danger", "I'm sorry, the user id you specified is invalid!");
-	header("Location: " . getReferralPage());
-	exit();
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -61,10 +40,6 @@ if (!is_numeric($selected_user_id) || !userIdExists($selected_user_id)){
   ?>
 <body>
 
-<?php
-echo "<script>selected_user_id = $selected_user_id;</script>";
-?>
-  
 <!-- Begin page contents here -->
 <div id="wrapper">
 
@@ -88,10 +63,10 @@ echo "<script>selected_user_id = $selected_user_id;</script>";
 
 </div><!-- /#wrapper -->
 
-    <script src="../js/widget-users.js"></script>
+    <script src="../js/bookInfo.js"></script>
     <script>
 		$(document).ready(function() {
-			userDisplay('widget-user-info', selected_user_id);
+			userDisplay('bookName');
 
 			alertWidget('display-alerts');
 

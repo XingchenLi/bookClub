@@ -7,8 +7,8 @@ function renderAccountPageHeader($hooks = array()){
     } else {
         $hooks["#SB_STYLE#"] = 'sb-admin.css';
     }
-	
-	return renderTemplate(ACCOUNT_HEAD_FILE, $hooks);	 
+
+	return renderTemplate(ACCOUNT_HEAD_FILE, $hooks);
 }
 
 function renderMenu($highlighted_item_class){
@@ -18,14 +18,14 @@ function renderMenu($highlighted_item_class){
       header("Location: ../login.php");
       exit();
     }
-    
+
     global $loggedInUser, $master_account;
-    
+
     $hooks = array(
               "#USERNAME#" => $loggedInUser->username,
               "#WEBSITENAME#" => SITE_TITLE
               );
-    
+
     // Special case for root account
     if ($loggedInUser->user_id == $master_account){
         $hooks['#HEADERMESSAGE#'] = "<span class='navbar-center navbar-brand'>YOU ARE CURRENTLY LOGGED IN AS ROOT USER</span>";
@@ -37,7 +37,7 @@ function renderMenu($highlighted_item_class){
 
     $html = '
     <!-- Brand and toggle get grouped for better mobile display -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-customer navbar-fixed-top" role="navigation">
 <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
         <span class="sr-only">Toggle navigation</span>
@@ -51,11 +51,11 @@ function renderMenu($highlighted_item_class){
 
 <div class="collapse navbar-collapse navbar-ex1-collapse">
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <ul class="nav navbar-nav side-nav">';
+    <ul class="nav navbar-customer side-nav">';
     foreach ($menu as $r => $v){
         // Set active class if this item is currently selected
         $active = ($highlighted_item_class == $v['class_name']) ? "active" : "";
-    
+
         if ($v['menu'] == 'left' AND $v['menu'] != 'left-sub'){
             $html .= "<li class='navitem-".$v['class_name']." $active'><a href='../".$v['page']."'><i class='".$v['icon']."'></i> ".$v['name']."</a></li>";
         }
@@ -74,7 +74,7 @@ function renderMenu($highlighted_item_class){
         }
     }
     $html .= '</ul>';
-//top nav bar
+//top nav bar  drop down menu on the tops
     $html .= '<ul class="nav navbar-master navbar-nav navbar-right">';
     foreach ($menu as $r => $v){
         if ($v['menu'] == 'top-main' AND $v['menu'] != 'top-main-sub'){
@@ -108,20 +108,20 @@ function renderMenu($highlighted_item_class){
 }
 
 // TODO: clear unspecified placeholders
-function renderTemplate($template_file, $hooks = array()){    
+function renderTemplate($template_file, $hooks = array()){
 	$contents = file_get_contents(SITE_ROOT . "models/page-templates/" . $template_file);
-    
+
     //Check to see we can access the file / it has some contents
     if(!$contents || empty($contents)) {
           addAlert("danger", "One or more templates for this page is missing.");
           return null;
-    } else { 
+    } else {
         $find = array_keys($hooks);
         $replace = array_values($hooks);
-        
+
         //Replace hooks
         $contents = str_replace($find, $replace, $contents);
-        
+
         return $contents;
     }
 }
@@ -139,7 +139,7 @@ function replaceKeyHooks($data, $template){
 // UserCake's basic templating system.  Replaces hooks with specified text
 function replaceDefaultHook($str)
 {
-	global $default_hooks,$default_replace;	
+	global $default_hooks,$default_replace;
 	return (str_replace($default_hooks,$default_replace,$str));
 }
 

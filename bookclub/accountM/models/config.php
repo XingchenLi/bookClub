@@ -1,39 +1,11 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 // Used to force backend scripts to log errors rather than print them as output
 function logAllErrors($errno, $errstr, $errfile, $errline, array $errcontext) {
 	ini_set("log_errors", 1);
 	ini_set("display_errors", 0);
-	
+
     error_log("Error ($errno): $errstr in $errfile on line $errline");
 	throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 }
@@ -51,7 +23,7 @@ require_once("db_functions.php");
 require_once("validation/Validator.php");
 require_once("table_builder.php");
 require_once("form_builder.php");
-
+require_once("bookTable.php");
 // Set validation parameters
 
 Valitron\Validator::langDir(__DIR__.'/validation/lang'); // always set langDir before lang.
@@ -105,10 +77,10 @@ defined("SITE_ROOT")
 
 defined("ACCOUNT_ROOT")
     or define("ACCOUNT_ROOT", SITE_ROOT . "account/");
-		
+
 defined("LOCAL_ROOT")
 	or define ("LOCAL_ROOT", realpath(dirname(__FILE__)."/.."));
-	
+
 defined("MENU_TEMPLATES")
     or define("MENU_TEMPLATES", dirname(__FILE__) . "/menu-templates/");
 
@@ -125,19 +97,19 @@ $page_include_paths = fetchFileList();
 
 // Other constants
 defined("ACCOUNT_HEAD_FILE")
-	or define("ACCOUNT_HEAD_FILE", "head-account.html");	
+	or define("ACCOUNT_HEAD_FILE", "head-account.html");
 
 // Set to true if you want authorization failures to be logged to the PHP error log.
 defined("LOG_AUTH_FAILURES")
 	or define("LOG_AUTH_FAILURES", false);
 
 defined("SESSION_NAME")
-    or define("SESSION_NAME", "UserFrosting");
+    or define("SESSION_NAME", "BookClub");
 
 defined("SITE_TITLE")
     or define("SITE_TITLE", $websiteName);
 
-	
+
 // This is the user id of the master (root) account.
 // The root user cannot be deleted, and automatically has permissions to everything regardless of group membership.
 $master_account = 1;
@@ -160,16 +132,16 @@ function getAbsoluteDocumentPath($localPath){
 function getRelativeDocumentPath($localPath){
 	// Replace backslashes in local path (if we're in a windows environment)
 	$localPath = str_replace('\\', '/', $localPath);
-	
+
 	// Get lowercase version of path
 	$localPathLower = strtolower($localPath);
 
 	// Replace backslashes in local root (if we're in a windows environment)
-	$localRoot = str_replace('\\', '/', LOCAL_ROOT);	
-	
+	$localRoot = str_replace('\\', '/', LOCAL_ROOT);
+
 	// Get lowercase version of path
 	$localRootLower = strtolower($localRoot) . "/";
-	
+
 	// Remove local root but preserve case
 	$pos = strpos($localPathLower, $localRootLower);
 	if ($pos !== false) {
