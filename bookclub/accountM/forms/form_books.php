@@ -170,7 +170,6 @@ $response = "
 </div>
 </div>
 </div>
-
 ";
 
 

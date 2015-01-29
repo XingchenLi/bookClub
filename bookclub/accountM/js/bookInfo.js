@@ -49,13 +49,13 @@ function bookTable(box_id, options) {
 
 		// Link buttons
 		$('#' + box_id + ' .btn-add-book').click(function() {
-			bookForm('user-create-dialog');
+		  bookUpload();
 		});
 
 		$('#' + box_id + ' .btn-edit-book').click(function() {
             var btn = $(this);
             var book_id = btn.data('id');
-			bookForm('user-update-dialog', book_id);
+			bookForm('book-update-dialog', book_id);
 		});
 
 		$('#' + box_id + ' .btn-delete-book').click(function() {
@@ -72,76 +72,9 @@ function bookTable(box_id, options) {
 
 
 /* Display a modal form for updating/creating a user */
-function bookForm(box_id, book_id) {
-	book_id = typeof book_id !== 'undefined' ? book_id : "";
-
-	// Delete any existing instance of the form with the same name
-	if($('#' + box_id).length ) {
-		$('#' + box_id).remove();
-	}
-
-	var data = {
-		box_id: box_id,
-		render_mode: 'modal',
-		ajaxMode: "true",
-		fields: {
-			'book_name' : {
-				'display' : 'show'
-			},
-			'author_name' : {
-				'display' : 'show'
-			},
-			'publisher' : {
-				'display' : 'show'
-			},
-			'edition' : {
-				'display' : 'show'
-			},
-			'ISBN' : {
-				'display': 'disabled',
-
-			}
-		},
-		buttons: {
-			'btn_submit' : {
-				'display' : 'show'
-			},
-			'btn_edit' : {
-				'display' : 'hidden'
-			},
-			'btn_disable' : {
-				'display' : 'hidden'
-			},
-			'btn_enable' : {
-				'display' : 'hidden'
-			},
-			'btn_activate' : {
-				'display' : 'hidden'
-			},
-			'btn_delete' : {
-				'display' : 'hidden'
-			}
-		}
-	};
-
-	// Generate the form
-	$.ajax({
-	  type: "GET",
-	  url: FORMSPATH + "form_books.php",
-	  data: data,
-	  dataType: 'json',
-	  cache: false
-	})
-	.fail(function(result) {
-		addAlert("danger", "Oops, looks like our server might have goofed.  If you're an admin, please check the PHP error logs.");
-		alertWidget('display-alerts');
-	})
-	.done(function(result) {
-		// Append the form as a modal dialog to the body
-		$( "body" ).append(result['data']);
-		$('#uploadBook').modal('show');
-
-	});
+function bookUpload(box_id, book_id) {
+	alert('upload Functions');
+	$('#' + box_id).modal('show');
 }
 
 // Display user info in a panel

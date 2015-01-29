@@ -99,9 +99,7 @@ if (isset($get['buttons']['view_all'])){
 }
 
 // Load Book here!! i am using user database as a test(using loadUsers function)
-if (($books = loadUsers($get['limit'])) === true) {
-  apiReturnError($ajax, ACCOUNT_ROOT);
-}
+
 
 // Compute book table properties
 foreach($books as $book_id => $book){
@@ -163,13 +161,59 @@ if (count($books) > 0) {
 }
 
 $response .= "
-        <div class='row'>
+<!--  <div class='row'>
             <div class='col-md-6 {$buttons_render['add']['hidden']}'>
-                <button type='button' class='btn btn-success btn-add-book' data-toggle='modal' data-target='#user-create-dialog'>
+                <button type='button' class='btn btn-success btn-add-book' data-toggle='modal' data-target='#book-create-dialog'>
                     <i class='fa fa-plus-square'></i>  upload New Books
                 </button>
-            </div>
+           </div>
+        </div>-->
+        <!-- Button trigger modal -->
+        <button type='button' class='btn btn-success ' data-toggle='modal' data-target='#myModal'>
+        <i class='fa fa-plus-square'></i> upload New Books2
+        </button>
+
+        <!-- Modal -->
+        <div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+        <div class='modal-dialog'>
+        <div class='modal-content'>
+        <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+        <h4 class='modal-title' id='myModalLabel'>Upload Book</h4>
         </div>
+        <div class='modal-body'>
+    <!--get ISBN from User-->
+    <form class = 'form-inline'>
+    <input type='number' class='form-control' placeholder='ISBN' aria-describedby='basic-addon1'>
+    <button type='submit' class='btn btn-primary'>Search</button>
+    </form>
+        <!--change information here-->
+        <div class='media'>
+        <div class='media-letf'>
+        <a href='#'>
+        <img class='media-object' src='...' alt='...'>
+        </a>
+        </div>
+        <div class='media-body'>
+        <h4 class='media-heading'>Book Name</h4>
+        <p> Author</p>
+        <p> ISBN</p>
+        <p> Publish Date</p>
+        <p> Price: </p>
+        </div>
+        <form class = 'form-inline'>
+        <input type='number' class='form-control' placeholder='price' aria-describedby='basic-addon1'>
+        </form>
+        </div>
+        </div><!-- model body-->
+        <div class='modal-footer'>
+        <button type='button' class='btn btn-success' data-dismiss='modal'>upload</button>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+        </div>
+        </div>
+        </div>
+        </div>
+
     </div> <!-- end panel body -->
 </div> <!-- end panel -->";
 

@@ -5,28 +5,28 @@ require_once("template_functions.php");
 class TableBuilder {
 
     protected $_columns = array();
-    
+
     protected $_rows = array();
-    
+
     protected $_menu_items = array();
-    
+
     protected $_menu_label;
     protected $_menu_state_field;
-    protected $_menu_style_field;   
-    
+    protected $_menu_style_field;
+
     public function __construct($columns, $rows = array(), $menu_items = array(), $menu_label = "Status/Actions", $menu_state_field = null, $menu_style_field = null) {
         $this->_columns = $columns;
         $this->_rows = $rows;
         $this->_menu_items = $menu_items;
         $this->_menu_label = $menu_label;
         $this->_menu_state_field = $menu_state_field;
-        $this->_menu_style_field = $menu_style_field;           
+        $this->_menu_style_field = $menu_style_field;
     }
-    
+
     public function addRow($row){
         $this->_rows[] = $row;
-    }        
-        
+    }
+
     public function render(){
         // Generate initial sort
         $initial_sort = "[";
@@ -40,8 +40,8 @@ class TableBuilder {
             }
             $i++;
         }
-        $initial_sort .= "]";  
-        
+        $initial_sort .= "]";
+
         // Render header rows
         $result = "
         <div class='table-responsive'>
@@ -53,26 +53,26 @@ class TableBuilder {
             } else {
                 $sorter = "";
             }
-        
+
             $result .= "<th class=$sorter>{$column['label']} <i class='fa fa-sort'></i></th>";
         }
-        
+
         // Add menu items column, if specified
         if (!empty($this->_menu_items)){
             $result .= "<th>{$this->_menu_label} <i class='fa fa-sort'></i></th>";
         }
-        
+
         $result .= "</tr></thead><tbody>";
-        
+
         // Render data rows
         foreach ($this->_rows as $row_id => $row) {
             // Render rows
            $result .= $this->renderRow($row_id);
         }
-        
+
         // Close table
         $result .= "</tbody></table>";
-        
+
         // Render paging controls
         $result .= "
             <div class='pager pager-lg'>
@@ -90,30 +90,30 @@ class TableBuilder {
                     <option value='100'>100</option>
                 </select>
             </div>";
-        
-        
+
+
         return $result;
     }
 
     private function renderRow($row_id){
         $row = $this->_rows[$row_id];
-    
+
         $result = "<tr>";
          foreach($this->_columns as $column_name => $column) {
              $result .= $this->renderCell($row_id, $column_name);
          }
-         
+
          // Build menu
          if (!empty($this->_menu_items)){
              $result .= $this->renderRowMenu($row_id);
          }  
         // Close row
         $result .= "</tr>";
-         
+
         return $result;
     }
-    
-    
+
+
     private function renderRowMenu($row_id){
         $row = $this->_rows[$row_id];
         if (isset($row[$this->_menu_style_field])){
@@ -126,7 +126,7 @@ class TableBuilder {
         } else {
             $row_state = "Options";
         }
-        
+
         $result = "
             <td>
                 <div class='btn-group'>
@@ -139,16 +139,16 @@ class TableBuilder {
                 $item_template = $item['template'];
             else
                 continue;
-            $result .= "<li>" . $this->renderString($row, $item_template) . "</li>";      
-        }                     
-                    
+            $result .= "<li>" . $this->renderString($row, $item_template) . "</li>";
+        }
+
         $result .= "</ul>
                 </div>
-            </td>";     
-    
+            </td>";
+
         return $result;
     }
-    
+
     private function renderCell($row_id, $column_name){
         $row = $this->_rows[$row_id];
         $column = $this->_columns[$column_name];
@@ -170,18 +170,18 @@ class TableBuilder {
                 $td = "<td>";       // Default will be empty
             }
         }
-        
-        // If an empty_field name was specified, and its value matches the "empty value", render the empty template 
+
+        // If an empty_field name was specified, and its value matches the "empty value", render the empty template
         if ($empty_field && ($row[$empty_field] == $empty_value)){
             return $td . $this->renderString($row, $empty_template) . "</td>";
         } else {
             return $td . $this->renderString($row, $template) . "</td>";
         }
-    }    
-        
+    }
+
     private function renderString($row, $template){
         $result = $template;
-  
+
         // First, replace any arrays (format: [[array_name template]])
         if (preg_match_all("/\[\[([a-zA-Z_0-9]*)\s(.+?)\]\]/", $result, $matches)){
             // Iterate through each array template that was matched
@@ -194,7 +194,7 @@ class TableBuilder {
                 $array_name = $matches[1][$i];
                 $array_template = $matches[2][$i];
                 //error_log($array_name . ":" . $array_template);
-                // Check that array name exists in $row and is of type 'array' 
+                // Check that array name exists in $row and is of type 'array'
                 if (!isset($row[$array_name]) || gettype($row[$array_name]) != "array")
                     continue;
                 //error_log("$array_name is a valid array element");
@@ -210,7 +210,7 @@ class TableBuilder {
                     // Append the array instance to the overall array result
                     $array_result .= $array_instance;
                 }
-                
+
                 // Ok, now replace the entire array placeholder with the rendered array
                 $result = str_replace($matches[0][$i], $array_result, $result);
             }
