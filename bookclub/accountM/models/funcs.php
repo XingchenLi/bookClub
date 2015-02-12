@@ -1,33 +1,5 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 /*********************************
  * Formatting Functions
@@ -42,13 +14,13 @@ THE SOFTWARE.
 function formatPhone($num)
 {
 $num = preg_replace('/[^0-9]/', '', $num);
- 
+
 $len = strlen($num);
 if($len == 7)
 $num = preg_replace('/([0-9]{3})([0-9]{4})/', '$1-$2', $num);
 elseif($len == 10)
 $num = preg_replace('/([0-9]{3})([0-9]{3})([0-9]{4})/', '($1) $2-$3', $num);
- 
+
 return $num;
 }
 
@@ -173,7 +145,7 @@ function prettyPrint( $json )
 /*********************************
  * Language Functions
  *********************************/
- 
+
 //Retrieve a list of all .php files in models/languages
 function getLanguageFiles()
 {
@@ -249,7 +221,7 @@ function destroySession($name)
 
 //Generate a unique code
 function getUniqueCode($length = "")
-{	
+{
 	$code = md5(uniqid(rand(), true));
 	if ($length != "") return substr($code, 0, $length);
 	else return $code;
@@ -276,11 +248,11 @@ function passwordVerifyUF($password, $hash){
 		} else {
 			return false;
 		}
-	}	
+	}
 	// Homegrown implementation (assuming that current install has been using a cost parameter of 12)
 	else if (getPasswordHashTypeUF($hash) == "homegrown"){
 		/*used for manual implementation of bcrypt*/
-		$cost = '12'; 
+		$cost = '12';
 		if (substr($hash, 0, 60) == crypt($password, "$2y$".$cost."$".substr($hash, 60))){
 			return true;
 		} else {
@@ -351,9 +323,9 @@ function validate_ip($ip)
 
 //getuseragent
 //taken from comments @ php.net
-function getBrowser() 
-{ 
-    $u_agent = $_SERVER['HTTP_USER_AGENT']; 
+function getBrowser()
+{
+    $u_agent = $_SERVER['HTTP_USER_AGENT'];
     $bname = 'Unknown';
     $platform = 'Unknown';
     $version= "";
@@ -366,30 +338,30 @@ function getBrowser()
     elseif (preg_match('/windows|win32/i', $u_agent)) {
         $platform = 'windows';
     }
-    if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent)) { 
-        $bname = 'Internet Explorer'; 
-        $ub = "MSIE"; 
-    } 
-    elseif(preg_match('/Firefox/i',$u_agent)) { 
-        $bname = 'Mozilla Firefox'; 
-        $ub = "Firefox"; 
-    } 
-    elseif(preg_match('/Chrome/i',$u_agent)) { 
-        $bname = 'Google Chrome'; 
-        $ub = "Chrome"; 
-    } 
-    elseif(preg_match('/Safari/i',$u_agent)) { 
-        $bname = 'Apple Safari'; 
-        $ub = "Safari"; 
-    } 
-    elseif(preg_match('/Opera/i',$u_agent)) { 
-        $bname = 'Opera'; 
-        $ub = "Opera"; 
-    } 
-    elseif(preg_match('/Netscape/i',$u_agent))  { 
-        $bname = 'Netscape'; 
-        $ub = "Netscape"; 
-    } 
+    if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent)) {
+        $bname = 'Internet Explorer';
+        $ub = "MSIE";
+    }
+    elseif(preg_match('/Firefox/i',$u_agent)) {
+        $bname = 'Mozilla Firefox';
+        $ub = "Firefox";
+    }
+    elseif(preg_match('/Chrome/i',$u_agent)) {
+        $bname = 'Google Chrome';
+        $ub = "Chrome";
+    }
+    elseif(preg_match('/Safari/i',$u_agent)) {
+        $bname = 'Apple Safari';
+        $ub = "Safari";
+    }
+    elseif(preg_match('/Opera/i',$u_agent)) {
+        $bname = 'Opera';
+        $ub = "Opera";
+    }
+    elseif(preg_match('/Netscape/i',$u_agent))  {
+        $bname = 'Netscape';
+        $ub = "Netscape";
+    }
     $known = array('Version', $ub, 'other');
     $pattern = '#(?<browser>' . join('|', $known) .
     ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
@@ -416,19 +388,19 @@ function getBrowser()
 /*
 	simply add inside of a form tag like so:
 	form_protect($loggedInUser->csrf_token);
-	
+
 	then in the processing script:
-	
+
 	require_once __DIR__ . '/models/post.php';
-	
+
 	< OR >
-	
+
 	require_once 'models/post.php';
 */
 function form_protect($token)
 {
 	if(isUserLoggedIn())
-	{echo '<input type="hidden" name="csrf_token" value="'. $token .'">';}	
+	{echo '<input type="hidden" name="csrf_token" value="'. $token .'">';}
 }
 
 // Checks the logged in user and CSRF token when GETting/POSTing to an API page from a form
@@ -443,13 +415,13 @@ function apiSecurityCheck($method = "post", $field_name = "csrf_token", $failure
 		} else if (isset($_POST['ajaxMode']) and $_POST['ajaxMode'] == "true" ){
 			$ajax = true;
 		}
-		
+
 		// Request must be from a logged in user.  Do we want to make this customizable?
 		if (!isUserLoggedIn()){
 			addAlert("danger", "You must be logged in to access this resource.");
 			apiReturnError($ajax, $failure_landing_page);
 		}
-		
+
 		if (isset($_POST[$field_name])) {
 			$csrf_token = htmlentities($_POST[$field_name]);
 			if (!$_SESSION["userCakeUser"]->csrf_validate(trim($csrf_token))){
@@ -458,9 +430,9 @@ function apiSecurityCheck($method = "post", $field_name = "csrf_token", $failure
 			}
 		} else {
 			addAlert("danger", lang("ACCESS_DENIED"));
-			apiReturnError($ajax, $failure_landing_page);		
+			apiReturnError($ajax, $failure_landing_page);
 		}
-		
+
 	} else {
 		// Confirm that data has been submitted via GET
 		if (!($_SERVER['REQUEST_METHOD'] == 'GET')) {
@@ -475,7 +447,7 @@ function apiSecurityCheck($method = "post", $field_name = "csrf_token", $failure
 			addAlert("danger", "You must be logged in to access this resource.");
 			apiReturnError($ajax, $failure_landing_page);
 		}
-		
+
 		if (isset($_GET[$field_name])) {
 			$csrf_token = htmlentities($_GET[$field_name]);
 			if (!$loggedInUser->csrf_validate(trim($csrf_token))){
@@ -484,7 +456,7 @@ function apiSecurityCheck($method = "post", $field_name = "csrf_token", $failure
 			}
 		} else {
 			addAlert("danger", lang("ACCESS_DENIED"));
-			apiReturnError($ajax, $failure_landing_page);		
+			apiReturnError($ajax, $failure_landing_page);
 		}
 	}
 }
@@ -522,7 +494,7 @@ function minMaxRange($min, $max, $what)
 /*********************************
  * Miscellaneous Functions
  *********************************/
- 
+
 /**
 * array_merge_recursive does indeed merge arrays, but it converts values with duplicate
 * keys to arrays rather than overwriting the value in the first array with the duplicate

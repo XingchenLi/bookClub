@@ -1,33 +1,5 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 
 // Create a new user.
@@ -51,29 +23,29 @@ if ($admin == "true"){
 	  addAlert("danger", "You must be logged in to access this resource.");
 	  apiReturnError($ajax, ACCOUNT_ROOT);
   }
-  
+
   $csrf_token = $validator->requiredPostVar('csrf_token');
-  
+
   // Validate csrf token
   if (!$csrf_token or !$loggedInUser->csrf_validate(trim($csrf_token))){
 	  addAlert("danger", lang("ACCESS_DENIED"));
 	  apiReturnError($ajax, ACCOUNT_ROOT);
   }
-  
+
 } else {
   global $can_register;
-  
+
   if (!userIdExists('1')){
 	  addAlert("danger", lang("MASTER_ACCOUNT_NOT_EXISTS"));
 	  apiReturnError($ajax, SITE_ROOT);
   }
-  
+
   // If registration is disabled, send them back to the home page with an error message
   if (!$can_register){
 	  addAlert("danger", lang("ACCOUNT_REGISTRATION_DISABLED"));
 	  apiReturnError($ajax, SITE_ROOT);
   }
-  
+
   //Prevent the user visiting the logged in page if he/she is already logged in
   if(isUserLoggedIn()) {
 	  addAlert("danger", "I'm sorry, you cannot register for an account while logged in.  Please log out first.");
@@ -123,18 +95,18 @@ if ($error_count == 0){
 	// Use the global email activation setting unless we're told to skip it
 	if ($admin == "true" && $skip_activation == "true")
 	  $require_activation = false;
-	else  
+	else
 	  $require_activation = $emailActivation;
-	
+
 	// Try to create the new user
 	if ($new_user_id = createUser($user_name, $display_name, $email, $title, $password, $passwordc, $require_activation, $admin)){
 
 	} else {
 		apiReturnError($ajax, ($admin == "true") ? ACCOUNT_ROOT : SITE_ROOT);
 	}
-	
+
 	// If creation succeeds, try to add groups
-	
+
 	// If we're in admin mode and add_groups is specified, try to add those groups
 	if ($admin == "true" && $add_groups){
 	  // Convert string of comma-separated group_id's into array
@@ -143,7 +115,7 @@ if ($error_count == 0){
 	  foreach ($group_ids_arr as $group_id){
 		$addition_count += addUserToGroup($new_user_id, $group_id);
 	  }
-	  
+
 	  // Set primary group
 	  if(!empty($primary_group_id)){
 		  if (updateUserPrimaryGroup($new_user_id, $primary_group_id)){
@@ -153,7 +125,7 @@ if ($error_count == 0){
 		  } else {
 			  $error_count++;
 		  }
-	  }	  
+	  }
 	// Otherwise, add default groups and set primary group for new users
 	} else {
 	  if (dbAddUserToDefaultGroups($new_user_id)){
@@ -172,7 +144,7 @@ if ($error_count == 0){
 }
 
 restore_error_handler();
-  
+
 if (isset($_POST['ajaxMode']) and $_POST['ajaxMode'] == "true" ){
   echo json_encode(array(
 	"errors" => 0,

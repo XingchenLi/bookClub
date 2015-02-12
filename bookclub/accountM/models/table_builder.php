@@ -106,7 +106,7 @@ class TableBuilder {
          // Build menu
          if (!empty($this->_menu_items)){
              $result .= $this->renderRowMenu($row_id);
-         }  
+         }
         // Close row
         $result .= "</tr>";
 

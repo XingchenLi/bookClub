@@ -1,33 +1,5 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 // Resend the activation email for a user that has registered an account.  Note that this is enabled regardless of whether or not email activation is enabled.
 // This is to prevent "orphaned" accounts, who registered while email activation was still required.
@@ -48,7 +20,7 @@ if(!empty($_POST))
 {
 	$email = $_POST["email"];
 	$username = $_POST["username"];
-	
+
 	//Perform some validation
 	//Feel free to edit / change as required
 	if(trim($email) == "")
@@ -60,7 +32,7 @@ if(!empty($_POST))
 	{
 		$errors[] = lang("ACCOUNT_INVALID_EMAIL");
 	}
-	
+
 	if(trim($username) == "")
 	{
 		$errors[] =  lang("ACCOUNT_SPECIFY_USERNAME");
@@ -69,7 +41,7 @@ if(!empty($_POST))
 	{
 		$errors[] = lang("ACCOUNT_INVALID_USERNAME");
 	}
-	
+
 	if(count($errors) == 0)
 	{
 		//Check that the username / email are associated to the same account
@@ -80,7 +52,7 @@ if(!empty($_POST))
 		else
 		{
 			$userdetails = fetchUserAuthByUserName($username);
-			
+
 			//See if the user's account is activation
 			if($userdetails["active"]==1)
 			{
@@ -95,7 +67,7 @@ if(!empty($_POST))
 					$last_request = $userdetails["last_activation_request"];
 					$hours_diff = round((time()-$last_request) / (3600*$resend_activation_threshold),0);
 				}
-				
+
 				if($resend_activation_threshold!=0 && $hours_diff <= $resend_activation_threshold)
 				{
 					$errors[] = lang("ACCOUNT_LINK_ALREADY_SENT",array($resend_activation_threshold));
@@ -104,7 +76,7 @@ if(!empty($_POST))
 				{
 					//For security create a new activation url;
 					$new_activation_token = generateActivationToken();
-					
+
 					if(!updateLastActivationRequest($new_activation_token,$username,$email))
 					{
 						$errors[] = lang("SQL_ERROR");
@@ -112,15 +84,15 @@ if(!empty($_POST))
 					else
 					{
 						$mail = new userCakeMail();
-						
+
 						$activation_url = SITE_ROOT."api/activate_user.php?token=".$new_activation_token;
-						
+
 						//Setup our custom hooks
 						$hooks = array(
 							"searchStrs" => array("#ACTIVATION-URL","#USERNAME#"),
 							"subjectStrs" => array($activation_url,$userdetails["display_name"])
 							);
-						
+
 						if(!$mail->newTemplateMsg("resend-activation.txt",$hooks))
 						{
 							$errors[] = lang("MAIL_TEMPLATE_BUILD_ERROR");
@@ -166,7 +138,7 @@ if (isset($_POST['ajaxMode']) and $_POST['ajaxMode'] == "true" ){
 	exit();
   } else {
 	header('Location: resend_activation.php');
-	exit();	
+	exit();
   }
 }
 

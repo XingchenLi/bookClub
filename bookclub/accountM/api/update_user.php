@@ -1,33 +1,5 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 require_once("../models/config.php");
 set_error_handler('logAllErrors');
@@ -86,7 +58,7 @@ if(!$user_id or !userIdExists($user_id)){
 	}
 	exit();
 }
-	
+
 $userdetails = fetchUserAuthById($user_id); //Fetch user details
 
 $error_count = 0;
@@ -124,7 +96,7 @@ if ($title && $userdetails['title'] != $title){
 }
 
 // Update enabled if specified
-if ($enabled !== null){	
+if ($enabled !== null){
 	if (!updateUserEnabled($user_id, $enabled)){
 		$error_count++;
 	} else {
@@ -136,7 +108,7 @@ if ($enabled !== null){
 if ($password) {
 	// If updating own password, validate their current password
 	if ($self){
-		//Confirm the hashes match before updating a users password		
+		//Confirm the hashes match before updating a users password
 		if ($passwordcheck == ""){
 			addAlert("danger", lang("ACCOUNT_SPECIFY_PASSWORD"));
 			echo json_encode(array("errors" => 1, "successes" => 0));
@@ -145,24 +117,24 @@ if ($password) {
 			//No match
 			addAlert("danger", lang("ACCOUNT_PASSWORD_INVALID"));
 			echo json_encode(array("errors" => 1, "successes" => 0));
-			exit();	
-		}	
+			exit();
+		}
 	}
-	
-	// Prevent updating if someone attempts to update with the same password	
+
+	// Prevent updating if someone attempts to update with the same password
 	if(passwordVerifyUF($password, $loggedInUser->hash_pw)) {
 		addAlert("danger", lang("ACCOUNT_PASSWORD_NOTHING_TO_UPDATE"));
 		echo json_encode(array("errors" => 1, "successes" => 0));
 		exit();
 	}
-	
+
 	if (!$password_hash = updateUserPassword($user_id, $password, $passwordc)){
 		$error_count++;
 	} else {
 		// If we're updating for the currently logged in user, update their hash_pw field
 		if ($self)
 			$loggedInUser->hash_pw = $password_hash;
-	
+
 		$success_count++;
 	}
 }
@@ -186,7 +158,7 @@ if(!empty($rm_groups)){
 if(!empty($add_groups)){
 	// Convert string of comma-separated group_id's into array
 	$group_ids_arr = explode(',',$add_groups);
-	
+
 	foreach ($group_ids_arr as $group_id){
 		if (addUserToGroup($user_id, $group_id)){
 			$success_count++;

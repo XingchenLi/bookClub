@@ -1,33 +1,5 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 require_once("db_functions.php");
 
@@ -39,9 +11,9 @@ class PermissionValidators {
     */
     static function always(){
         return true;
-    
+
     }
-       
+
     /**
      * Return true if the specified user_id exists and matches the logged in user, false otherwise.
      * Use this function when you want a user to be able to perform an action involving their own account.
@@ -72,7 +44,7 @@ class PermissionValidators {
     static function isUserPrimaryGroup($user_id, $group_id){
         $primary_group = fetchUserPrimaryGroup($user_id);
         return ($primary_group['id'] == $group_id);
-    }    
+    }
 
     /**
      * Return true if the specified group_ids are the same.
@@ -81,7 +53,7 @@ class PermissionValidators {
      */
     static function isSameGroup($group_id, $group_id_2){
         return ($group_id == $group_id_2);
-    }      
+    }
 
     /**
      * Return true if the specified group_id is a default group.
@@ -90,25 +62,25 @@ class PermissionValidators {
     static function isDefaultGroup($group_id){
         $group = fetchGroupDetails($group_id);
         return ($group['is_default'] >= '1');
-    }         
-     
+    }
+
     /**
      * Return true if the specified user_id exists and is an active user, false otherwise.
-     * @param int $user_id the user_id to compare to the currently logged in user's user_id.     
+     * @param int $user_id the user_id to compare to the currently logged in user's user_id.
      */
     static function isActive($user_id){
         return true;
-    }    
- 
+    }
+
 
     /**
      * Return true if the specified user_id is assigned to the specified student_id, false otherwise (for bloomingtontutors.com).
      * @param int $user_id the user_id to check.
-     * @param int $student_id the student_id to check.     
+     * @param int $student_id the student_id to check.
      */
     static function hasStudent($user_id, $student_id){
         return true;
-    }        
+    }
 }
 
 /** Called from within an action function, checks permissions for that action with the specified arguments */
@@ -119,7 +91,7 @@ function checkActionPermissionSelf($action_function, $function_args){
             error_log("Authorization failed: action '$action_function' does not exist.");
         return false;
     }
-    
+
     // Map the function argument names to their values.  We end up with a dictionary of argument_name => argument_value
     $method = new ReflectionFunction($action_function);
     $mapped_args = array();
@@ -137,46 +109,46 @@ function checkActionPermissionSelf($action_function, $function_args){
         }
         $i++;
     }
-    
+
     return checkActionPermission($action_function, $mapped_args);
 }
-    
+
 /** Load action permissions for the logged in user, and check the specified action with the specified arguments. */
 function checkActionPermission($action_function, $args) {
     global $db_table_prefix, $loggedInUser, $master_account;
-    
+
     // Error if user is not logged in
     if (!isUserLoggedIn()){
         if (LOG_AUTH_FAILURES)
             error_log("Authorization failed: user is not logged in.");
         return false;
-    }    
-    
+    }
+
     // Root user automatically has access to everything
     if ($loggedInUser->user_id == $master_account)
         return true;
-    
+
     // Error if the specified function does not exist.
     if (!function_exists($action_function)){
         if (LOG_AUTH_FAILURES)
             error_log("Authorization failed: action '$action_function' does not exist.");
         return false;
     }
-    
+
     // Fetch individual level permits
     $action_permits = fetchUserPermits($loggedInUser->user_id, $action_function);
-    
+
     // Fetch permits for each group that the user belongs to
     $groups = fetchUserGroups($loggedInUser->user_id);
     foreach ($groups as $group_id => $group){
         $action_permits = array_merge($action_permits, fetchGroupPermits($group_id, $action_function));
     }
-     
+
     // For each mapping, run the appropriate handlers
     // If the handlers pass, return true.  Otherwise, move on to the next mapping.
     foreach ($action_permits as $idx => $action_permit){
         $action = $action_permit['action'];
-        
+
         // Process permits for this mapping
         $permits_str = $action_permit['permits'];
         $permits = explode('&', $permits_str);
@@ -190,7 +162,7 @@ function checkActionPermission($action_function, $args) {
     if (LOG_AUTH_FAILURES)
         error_log("Authorization failed: User {$loggedInUser->username} (user_id={$loggedInUser->user_id}) could not be validated for $action_function on arguments " . print_r($args, true));
     return false;
-    
+
 }
 
 // Parse a permit string into an array of permit function names and associated parameters
@@ -211,7 +183,7 @@ function parsePermitString($permit_str){
                 $permit_obj['parameters'] = array();
             }
             $permit_arr[] = $permit_obj;
-        }  
+        }
     }
     return $permit_arr;
 }
@@ -219,7 +191,7 @@ function parsePermitString($permit_str){
 // Validate current user against an array of permits with the specified parameters.  Return true if ALL permits succeed.
 function checkActionPermits($permits, $args){
     global $loggedInUser;
-    
+
     $permitReflector = new ReflectionClass('PermissionValidators');
     if (count($permits) == 0){
         if (LOG_AUTH_FAILURES)
@@ -255,14 +227,14 @@ function checkActionPermits($permits, $args){
                 }
             }
         }
-        
+
         try{
-            $permit_handler = $permitReflector->getMethod($permit_name);     
+            $permit_handler = $permitReflector->getMethod($permit_name);
         } catch (Exception $e){
             if (LOG_AUTH_FAILURES)
                 error_log("Authorization failed: permit handler '$permit_name' does not exist.");
             return false;
-        }         
+        }
 
         if (!$permit_handler->invokeArgs(null, $mappedArgs)){
             if (LOG_AUTH_FAILURES)
@@ -277,15 +249,15 @@ function checkActionPermits($permits, $args){
 }
 
 //Check if a user has access to an account page
-function securePage($file){		
-    
+function securePage($file){
+
     global $loggedInUser,$master_account;
-    
+
 	// Separate file path from base website path (case-insensitive)
 	$relativeURL = strtolower(getRelativeDocumentPath($file));
-    
+
     $pageDetails = fetchPageDetailsByName($relativeURL);
-    
+
 	//If page does not exist in DB or page is not permitted for any groups, disallow access		//Modified by Alex 9/18/2013 to NOT allow access by default
 	if (empty($pageDetails)){
 		if (LOG_AUTH_FAILURES)
@@ -294,7 +266,7 @@ function securePage($file){
 	}
 	//If page is public, allow access
 	elseif ($pageDetails['private'] == 0) {
-		return true;	
+		return true;
 	}
 	//If user is not logged in, deny access
 	elseif(!isUserLoggedIn()) {
@@ -302,18 +274,18 @@ function securePage($file){
             error_log("Authorization failed: user is not logged in.");
 		return false;
 	}
-	else {	
+	else {
 		// Automatically grant access if master (root) user
         if ($loggedInUser->user_id == $master_account){
 			return true;
 		}
 		// Otherwise check if user's permission levels allow access to page
-		if (userPageMatchExists($loggedInUser->user_id, $pageDetails['id'])){ 
+		if (userPageMatchExists($loggedInUser->user_id, $pageDetails['id'])){
 			return true;
 		} else {
             if (LOG_AUTH_FAILURES)
                 error_log("Authorization failed: {$loggedInUser->username} does not have permission to access page $page.");
-			return false;	
+			return false;
 		}
 	}
 }
@@ -324,7 +296,7 @@ function fetchSecureFunctions(){
     $functionFinder = '/function[\s\n]+(\S+)[\s\n]*\(/';
     # Init an Array to hold the Function Names
     $functionArray = array();
-    # Load the Content of the secure function files   
+    # Load the Content of the secure function files
     $fileContents = "";
     foreach($files_secure_functions as $file){
         $fileContents .= file_get_contents( $file );
@@ -369,10 +341,10 @@ function fetchPermissionValidators(){
     // Load all permission validator functions
     $permitReflector = new ReflectionClass('PermissionValidators');
     $methods = $permitReflector->getMethods();
-    
+
     // Next, get parameter list for each function
     $functionsWithParams = array();
-    
+
     foreach ($methods as $method) {
         $function_name = $method->getName();
         // Map the function argument names to their values.  We end up with a dictionary of argument_name => argument_value
@@ -380,7 +352,7 @@ function fetchPermissionValidators(){
         if (!$description = $commentBlock['description'])
             $description = "No description available.";
         if (!$parameters = $commentBlock['parameters'])
-            $parameters = array();       
+            $parameters = array();
         $methodObj = array("description" => $description, "parameters" => array());
         foreach ($method->getParameters() as $param){
             if (isset($parameters[$param->name]))
@@ -389,7 +361,7 @@ function fetchPermissionValidators(){
                 $methodObj['parameters'][$param->name] = array("type" => "unknown", "description" => "unknown");
         }
         $functionsWithParams[$function_name] = $methodObj;
-    
+
     }
     return $functionsWithParams;
 }
@@ -400,12 +372,12 @@ function fetchPresetPermitOptions($fields){
 	// Add these permit options for actions that involve both a user_id and a group_id
 	if (in_array('user_id', $fields) && in_array('group_id', $fields)) {
 		// Create permit options for default groups (any user)
-		$permits[] = array("name" => "any user and default groups.", "value" => "isDefaultGroup(group_id)");				
+		$permits[] = array("name" => "any user and default groups.", "value" => "isDefaultGroup(group_id)");
 		// Create permit options for each group (any user)
 		$groups = fetchAllGroups();
 		foreach($groups as $group_id => $group){
-			$permits[] = array("name" => "any user and group '{$group['name']}'.", "value" => "isSameGroup(group_id,'{$group['id']}')");		
-		}	
+			$permits[] = array("name" => "any user and group '{$group['name']}'.", "value" => "isSameGroup(group_id,'{$group['id']}')");
+		}
 		$permits[] = array("name" => "any user with any group.", "value" => "always()");
 	// Only add these permit options for actions that involve a user_id
 	} else if (in_array('user_id', $fields)) {
@@ -414,17 +386,17 @@ function fetchPresetPermitOptions($fields){
 		// Create permits to perform actions on users in primary groups
 		$groups = fetchAllGroups();
 		foreach($groups as $group_id => $group){
-			$permits[] = array("name" => "users whose primary group is '{$group['name']}'.", "value" => "isUserPrimaryGroup(user_id,'{$group['id']}')");	
+			$permits[] = array("name" => "users whose primary group is '{$group['name']}'.", "value" => "isUserPrimaryGroup(user_id,'{$group['id']}')");
 		}
 		$permits[] = array("name" => "any user.", "value" => "always()");
 	// Add these options for actions that involve a group_id
 	} else if (in_array('group_id', $fields)) {
 		$groups = fetchAllGroups();
 		// TODO: create permit option for the user's primary group only?
-		
+
 		// Create permit options for each group
 		foreach($groups as $group_id => $group){
-			$permits[] = array("name" => "group '{$group['name']}'.", "value" => "isSameGroup(group_id,'{$group['id']}')");		
+			$permits[] = array("name" => "group '{$group['name']}'.", "value" => "isSameGroup(group_id,'{$group['id']}')");
 		}
 		$permits[] = array("name" => "any group.", "value" => "always()");
 	// Default options

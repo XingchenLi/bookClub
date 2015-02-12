@@ -1,33 +1,5 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 // Request method: GET
 
@@ -59,7 +31,7 @@ $disabled = $validator->optionalBooleanGetVar('disabled', false);
 if (!($user_id xor $group_id)){
   addAlert("danger", "Exactly one of {user_id, group_id} must be specified.");
   echo json_encode(array("errors" => 1, "successes" => 0));
-  exit();  
+  exit();
 }
 
 // Buttons (optional)
@@ -100,13 +72,13 @@ if ($populate_fields){
       if (!$action_permit = fetchActionPermit($action_id, "user"))
         addAlert("danger", "The specified action id does not exist.");
     }
-    
+
     $action_name = $action_permit['action'];
     $action_permits = $action_permit['permits'];
 
     if ($render_mode == "panel"){
-        $box_title = $action_name; 
-    }   
+        $box_title = $action_name;
+    }
 }
 
 // Otherwise just load user/group data
@@ -130,7 +102,7 @@ if ($render_mode == "modal"){
                     <h4 class='modal-title'>$box_title</h4>
                 </div>
                 <div class='modal-body'>
-                    <form method='post' action='$target'>";        
+                    <form method='post' action='$target'>";
 } else if ($render_mode == "panel"){
     $response .=
     "<div class='panel panel-primary'>
@@ -186,7 +158,7 @@ if ($populate_fields){
   if (!$option_found){
     $response .= "<option value='$action_permits'>Custom permit string: $action_permits</option>";
   }
-}  
+}
 
 $response .= "</select>
 </div>
@@ -217,7 +189,7 @@ if ($render_mode == "modal")
     $response .= "</form></div></div></div></div>";
 else
     $response .= "</form></div></div>";
-    
+
 echo json_encode(array("data" => $response), JSON_FORCE_OBJECT);
 
 ?>

@@ -7,7 +7,7 @@
 Copyright (c) 2014
 
 Welcome to UserFrosting, a secure, modern user management system for web services and applications.  UserFrosting is based on the popular UserCake system, written in PHP.  UserFrosting improves on this system by adding fine-grained authorization rules and a sleek, intuitive frontend interface based on HTML5 and Twitter Bootstrap.  We've also separated the backend PHP machinery that interacts with the database from the frontend code base.  The frontend and backend talk to each other via AJAX and JSON.
-        
+
 Screenshots
 -----------------
 #### Login page
@@ -31,7 +31,7 @@ Screenshots
 
 Why UserFrosting?
 -----------------
-This project grew out of a need for a simple user management system for my tutoring business, [Bloomington Tutors](http://bloomingtontutors.com).  I wanted something that I could develop rapidly and easily customize for the needs of my business.  Since my [prior web development experience](http://alexanderweissman.com/completed-projects/) was in pure PHP, I decided to go with the PHP-based UserCake system.  Over time I modified and expanded the codebase, turning it into the UserFrosting project. 
+This project grew out of a need for a simple user management system for my tutoring business, [Bloomington Tutors](http://bloomingtontutors.com).  I wanted something that I could develop rapidly and easily customize for the needs of my business.  Since my [prior web development experience](http://alexanderweissman.com/completed-projects/) was in pure PHP, I decided to go with the PHP-based UserCake system.  Over time I modified and expanded the codebase, turning it into the UserFrosting project.
 
 Why not use Node/Drupal/Django/RoR/(insert favorite framework here)?
 --------------------------------------------------------------------
@@ -86,7 +86,7 @@ Installation
 
 UserFrosting comes with an easy-to-use installer.  Simply download the code to a directory on your server, and navigate to the <code>/install</code> subdirectory.  UserFrosting will guide you through setting up the database, configuring settings, and creating the master account.
 
-Change Log - v0.2.2 
+Change Log - v0.2.2
 -------------------
 
 - Implemented upgrade system, will pull new version list from github and automatically grab update files as well.
@@ -95,7 +95,7 @@ Change Log - v0.2.2
 - Added dev_env to config.php as well as new setting to db-setting.php when set to true UF will no longer check for the install or upgrade directory (good for development defaults to FALSE)
 - Removal of models/captcha.php and replace with base64 captcha function.
 
-[Older changes](CHANGELOG.md)   
+[Older changes](CHANGELOG.md)
 
 Creds
 -----
@@ -113,7 +113,7 @@ The back end account management system is derived from [UserCake 2.0.2](http://u
 *  [Tablesorter 2.17.7](http://tablesorter.com)
 *  [Typeahead addon for Bootstrap](https://github.com/twitter/typeahead.js)
 *  [DateJS](http://www.datejs.com)
-*  [Bootstrap Switch](http://bootstrap-switch.org) 
+*  [Bootstrap Switch](http://bootstrap-switch.org)
 *  [Bootsole PHP templating](https://github.com/alexweissman/bootsole)
 
 All components are copyright of their respective creators.
@@ -122,4 +122,3 @@ Upcoming Features
 -----------------
 
 Please see the [wiki](https://github.com/alexweissman/UserFrosting/wiki/Upcoming-features) for a list of potential upcoming features.  If you would like to see a new feature implemented (or you would like to implement it!) please [open an issue](https://github.com/alexweissman/UserFrosting/issues?direction=desc&sort=updated&state=open).
-

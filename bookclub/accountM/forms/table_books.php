@@ -183,22 +183,25 @@ $response .= "
         </div>
         <div class='modal-body'>
     <!--get ISBN from User-->
-    <form class = 'form-inline'>
-    <input type='number' class='form-control' placeholder='ISBN' aria-describedby='basic-addon1'>
-    <button type='submit' class='btn btn-primary'>Search</button>
+    <script src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+    <script src = 'isbn_send_script.js'></script>
+
+    <form class = 'form-inline' id = 'bookform' name = 'bookform_name' method = 'post'>
+    <input id = 'isbnvalue' type='text' class='form-control' placeholder='ISBN' aria-describedby='basic-addon1'>
+    <input id = 'submit' button type='submit' class='btn btn-primary'>Search</button>
     </form>
         <!--change information here-->
         <div class='media'>
         <div class='media-letf'>
         <a href='#'>
-        <img class='media-object' src='...' alt='...'>
+        <img id = 'currentImage' class='media-object' src='...' alt='...'>
         </a>
         </div>
         <div class='media-body'>
-        <h4 class='media-heading'>Book Name</h4>
-        <p> Author</p>
-        <p> ISBN</p>
-        <p> Publish Date</p>
+        <h4 class='media-heading' id  = 'searchBN'>Book Name</h4>
+        <p id = 'searchAN'> Author</p>
+        <p id = 'searchISBN'> ISBN</p>
+        <p id = 'searchPublishDate'> Publish Date</p>
         <p> Price: </p>
         </div>
         <form class = 'form-inline'>

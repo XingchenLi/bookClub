@@ -80,7 +80,7 @@ function checkRequestMode($mode){
 			return true;
 		} else {
 			return false;
-		}		
+		}
 	} else {
 		error_log("Error: invalid mode specified in checkRequestMode().");
 		exit();

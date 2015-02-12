@@ -4,11 +4,7 @@
  *
  * Tested with PHP version 5
  *
- * @author     Bryson Shepard <lilfade@fadedgaming.co>
- * @author     Project Manager: Alex Weissman
- * @copyright  2014 UserFrosting
- * @version    0.2.0
- * @link       http://www.userfrosting.com/
+ *
  */
 
 require_once("../models/config.php");

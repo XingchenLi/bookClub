@@ -1,33 +1,5 @@
 <?php
-/*
 
-UserFrosting Version: 0.2.1 (beta)
-By Alex Weissman
-Copyright (c) 2014
-
-Based on the UserCake user management system, v2.0.2.
-Copyright (c) 2009-2012
-
-UserFrosting, like UserCake, is 100% free and open-source.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
 
 require_once("../models/config.php");
 
@@ -67,7 +39,7 @@ if(!empty($_POST))
 
 	$errors = array();
 	$password = $validate->requiredPostVar('password');
-	
+
 	//Perform some validation
 	//Feel free to edit / change as required
     if ($email == 1){
@@ -121,7 +93,7 @@ if(!empty($_POST))
 					$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
 				} else {
 					//Passwords match! we're good to go'
-					
+
 					//Construct a new logged in user object
 					//Transfer some db data to the session object
 					$loggedInUser = new loggedInUser();
@@ -132,10 +104,10 @@ if(!empty($_POST))
 					$loggedInUser->displayname = $userdetails["display_name"];
 					$loggedInUser->username = $userdetails["user_name"];
 					$loggedInUser->alerts = array();
-					
+
 					//Update last sign in
 					$loggedInUser->updateLastSignIn();
-					
+
 					// Update password if we had encountered an outdated hash
 					if (getPasswordHashTypeUF($userdetails["password"]) != "modern"){
 					    // Hash the user's password and update
@@ -148,12 +120,12 @@ if(!empty($_POST))
 							error_log("Notice: outdated password hash has been automatically updated to modern hashing.");
 						}
 					}
-					
+
 					// Create the user's CSRF token
 					$loggedInUser->csrf_token(true);
-					
+
 					$_SESSION["userCakeUser"] = $loggedInUser;
-					
+
 					$successes = array();
 					$successes[] = "Welcome back, " . $loggedInUser->displayname;
 				}
